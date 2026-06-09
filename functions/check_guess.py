@@ -3,15 +3,18 @@ from collections import Counter
 def check_guess(answer: str, guess: str) -> list:
     result = []
     answer_counts = Counter(answer)
-    guess_counts = Counter(guess)
-    for i in range(len(guess)):
-        if guess[i] == answer[i]:
+
+    for i, letter in enumerate(guess):
+        if letter == answer[i]:
             result.append("green")
-            answer_counts[guess[i]] -= 1
-        elif guess[i] in answer and answer_counts[guess[i]] > 0:
-            result.append("yellow")
-            answer_counts[guess[i]] -= 1
+            answer_counts[letter] -= 1
         else:
             result.append("gray")
+    
+    for i, letter in enumerate(guess):
+        if letter in answer and answer_counts[letter] > 0 and result[i] == "gray":
+            result[i] = "yellow"
+            answer_counts[letter] -= 1
+            
     return result
 
